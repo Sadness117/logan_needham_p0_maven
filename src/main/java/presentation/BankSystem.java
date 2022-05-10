@@ -14,6 +14,8 @@ Scanner scan = new Scanner(System.in);
 String input;
 
 BankAccountServiceImpl service = new BankAccountServiceImpl();
+		char proceed = 'y';
+		while(proceed== 'y') {
 		System.out.println("-----------------------");
 		System.out.println("Welcome to our bank");
 		System.out.println("-----------------------");
@@ -22,7 +24,8 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 		System.out.println("3. Make a deposite");
 		System.out.println("4. make a withdrawl");
 		System.out.println("5. Check Balance from account");
-		System.out.println("6. Logout");
+		System.out.println("6. Logout of current account");
+		System.out.println("7. Quit bank management system");
 		
 		System.out.println("-----------------------");
 		System.out.println("Please enter an option");
@@ -31,16 +34,12 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 		
 		switch(option) {
 		case 1:
-			
-			break;
-			
-		case 2:
-			String userInputs[] = new String[2];
+			String userInputs1[] = new String[2];
 			System.out.println("-----------------------");
 			System.out.println("Please input your username.");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			userInputs[0] = input;
+			userInputs1[0] = input;
 			
 			
 			
@@ -49,20 +48,52 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("Please input your password.");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			userInputs[1] = input;
+			userInputs1[1] = input;
+			System.out.println(service.addAccount(userInputs1[0], userInputs1[1]));
+			System.out.println("continue? y or n");
+			proceed = scan.next().charAt(0);
+			break;
+
 			
-			System.out.println(userInputs[0]);
-			System.out.println(userInputs[1]);
-			System.out.println(service.login(userInputs[0], userInputs[1]));
+		case 2:
+			String userInputs2[] = new String[2];
+			System.out.println("-----------------------");
+			System.out.println("Please input your username.");
+			System.out.println("-----------------------");
+			input = scan.next().toString();
+			userInputs2[0] = input;
 			
+			
+			
+			System.out.println(input);
+			System.out.println("-----------------------");
+			System.out.println("Please input your password.");
+			System.out.println("-----------------------");
+			input = scan.next().toString();
+			userInputs2[1] = input;
+			
+			System.out.println(userInputs2[0]);
+			System.out.println(userInputs2[1]);
+			System.out.println(service.login(userInputs2[0], userInputs2[1]));
+			proceed = scan.next().charAt(0);
 			break;
 		case 3:
 			break;
 		case 4:
 			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			System.out.println("-----------------------");
+			System.out.println("Thank you for using bank account manager");
+			System.out.println("-----------------------");
+			System.exit(0);
 			default:
+			break;
 		}
-		
+		}
 		
 		
 

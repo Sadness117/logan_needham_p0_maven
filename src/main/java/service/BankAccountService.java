@@ -5,7 +5,7 @@ import java.util.List;
 import model.BankAccountPojo;
 
 public interface BankAccountService {
-	BankAccountPojo addAccount(String username, String password); //create
+	String addAccount(String username, String password); //create
 	BankAccountPojo updateAccount(BankAccountPojo bankAccountPojo); //update
 	void deleteAccount(int productId); // delete
 	List<BankAccountPojo> getAllBankAccounts();//read 

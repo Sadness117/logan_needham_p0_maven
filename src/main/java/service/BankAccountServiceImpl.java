@@ -3,15 +3,18 @@ package service;
 import java.util.List;
 
 import dao.BankAccountDao;
-import dao.BankAccountDaoCollectionImpl;
+import dao.BankAccountDaoDatabaseImpl;
+import exceptions.IncorrectUsernameOrPasswordException;
 import model.BankAccountPojo;
 
 
 public class BankAccountServiceImpl implements BankAccountService {
 
 	BankAccountDao bankAccountDao;
+	BankAccountPojo currUser;
+	BankAccountDaoDatabaseImpl bankAccountDaoDatabaseImpl;
 	public BankAccountServiceImpl(){
-		bankAccountDao = new BankAccountDaoCollectionImpl(); 
+		bankAccountDaoDatabaseImpl = new BankAccountDaoDatabaseImpl();
 	}
 	@Override
 	public BankAccountPojo addFunds(int funds, String accountType) {
@@ -33,26 +36,24 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	@Override
-	public BankAccountPojo addAccount(String username, String password) {
+	public String addAccount(String username, String password) {
 		// TODO Auto-generated method stub
 		// referenced https://www.educative.io/edpresso/how-to-generate-random-numbers-in-java
-		int randomNum = (int)Math.floor(Math.random()*(1000-1+1)+1);
-		BankAccountPojo newBankAccount= new BankAccountPojo(username, password, randomNum);
-		BankAccountDaoCollectionImpl bankAccountDaoCollectionImpl = new BankAccountDaoCollectionImpl();
-		bankAccountDaoCollectionImpl.addAccount(newBankAccount);
-		return null;
+		
+		boolean bankAccountPojo= bankAccountDaoDatabaseImpl.addAccount(username, password);
+		
+		return "Account Successfully added, welcome " + username;
 	}
 
-	public String login(String username, String password) {
+	public String login(String username, String password){
 		// TODO Auto-generated method stub
 		//continue to check if correct password
-		BankAccountDaoCollectionImpl bankAccountDaoCollectionImpl = new BankAccountDaoCollectionImpl();
-		BankAccountPojo foundUser = bankAccountDaoCollectionImpl.getAnAccountByUsername(username);
-		if(foundUser.checkPass(password)) {
-			bankAccountDaoCollectionImpl.login(foundUser);
-			return "Logged in as " + username;
-		}else {
-			return "incorrect password";
+		BankAccountPojo bankAccountPojo= bankAccountDaoDatabaseImpl.login(username, password);
+		if(bankAccountPojo != null) {
+			currUser = bankAccountPojo;
+			return "Logged in";
+		} else {
+			return "incorrect username or password";
 		}
 		
 		

@@ -2,22 +2,23 @@ package model;
 
 public class BankAccountPojo {
 	private String username;
-	private String password;
+	private String hash_password;
 	private boolean loginSatus;
 	private int Id;
 	private int checking;
 	private int reserve;
 	private int savings;
-	public BankAccountPojo(String username, String password, int Id){
+	public BankAccountPojo(String username, String password, int id, int checking, int reserve, int savings){
 		this.username = username;
-		this.password = password;
+		this.hash_password = password;
 		this.loginSatus = false;
-		this.Id = Id;
-		this.checking = 0;
-		this.reserve = 0;
-		this.savings = 0;
+		this.Id = id;
+		this.checking = checking;
+		this.reserve = reserve;
+		this.savings = savings;
 		
 	}
+	
 	public String getCheckingInfo() {
 		return "$" + this.checking + " in checking account.";
 	}
@@ -28,8 +29,8 @@ public class BankAccountPojo {
 		return "$" + this.savings + " in savings account.";
 	}
 	public String getPassword(String enteredPassword) {
-		if (this.password.equals(enteredPassword)) {
-			return password;
+		if (this.hash_password.equals(enteredPassword)) {
+			return hash_password;
 		}
 		else {
 			return "Incorrect password";
@@ -37,7 +38,7 @@ public class BankAccountPojo {
 		
 	}
 	public Boolean checkPass(String enteredPassword) {
-		if (this.password.equals(enteredPassword)) {
+		if (this.hash_password.equals(enteredPassword)) {
 			return true;
 		}else {
 			return false;
@@ -67,8 +68,8 @@ public class BankAccountPojo {
 		}
 	}
 	public String changePassword(String currPassword, String newPassword) {
-		if (this.password.equals(newPassword)) {
-			this.password = newPassword;
+		if (this.hash_password.equals(newPassword)) {
+			this.hash_password = newPassword;
 			return "Updated password to " + newPassword;
 		}
 		else {
