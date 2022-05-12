@@ -11,7 +11,10 @@ public class BankSystem {
 		
 		
 Scanner scan = new Scanner(System.in);
-String input;
+String input = null;
+String accountType = null;
+String userInputs[] = new String[2];
+int funds;
 
 BankAccountServiceImpl service = new BankAccountServiceImpl();
 		char proceed = 'y';
@@ -25,7 +28,8 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 		System.out.println("4. make a withdrawl");
 		System.out.println("5. Check Balance from account");
 		System.out.println("6. Logout of current account");
-		System.out.println("7. Quit bank management system");
+		System.out.println("7. transfer funds from one account to another");
+		System.out.println("8. Quit bank management system");
 		
 		System.out.println("-----------------------");
 		System.out.println("Please enter an option");
@@ -34,12 +38,12 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 		
 		switch(option) {
 		case 1:
-			String userInputs1[] = new String[2];
+			
 			System.out.println("-----------------------");
 			System.out.println("Please input your username.");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			userInputs1[0] = input;
+			userInputs[0] = input;
 			
 			
 			
@@ -48,20 +52,20 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("Please input your password.");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			userInputs1[1] = input;
-			System.out.println(service.addAccount(userInputs1[0], userInputs1[1]));
+			userInputs[1] = input;
+			System.out.println(service.addAccount(userInputs[0], userInputs[1]));
 			System.out.println("continue? y or n");
 			proceed = scan.next().charAt(0);
 			break;
 
 			
 		case 2:
-			String userInputs2[] = new String[2];
+			
 			System.out.println("-----------------------");
 			System.out.println("Please input your username.");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			userInputs2[0] = input;
+			userInputs[0] = input;
 			
 			
 			
@@ -70,28 +74,107 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("Please input your password.");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			userInputs2[1] = input;
+			userInputs[1] = input;
 			
-			System.out.println(userInputs2[0]);
-			System.out.println(userInputs2[1]);
-			System.out.println(service.login(userInputs2[0], userInputs2[1]));
-			proceed = scan.next().charAt(0);
+			System.out.println(userInputs[0]);
+			System.out.println(userInputs[1]);
+			System.out.println(service.login(userInputs[0], userInputs[1]));
 			break;
 		case 3:
+			System.out.println("-----------------------");
+			System.out.println("Where would you like the funds to go?.");
+			System.out.println("checking, reserve, savings");
+			System.out.println("-----------------------");
+			
+			accountType = scan.next().toString();
+			
+			System.out.println("-----------------------");
+			System.out.println("how much would you like to put in?");
+			System.out.println("-----------------------");
+			funds = scan.nextInt();
+			System.out.println("-----------------------");
+			System.out.println(service.addFunds(funds, accountType));
+			System.out.println("-----------------------");
+			System.out.println("continue? y or n");
+			proceed = scan.next().charAt(0);
 			break;
 		case 4:
+			System.out.println("-----------------------");
+			System.out.println("Where would you like the funds withdrawn from?");
+			System.out.println("checking, reserve, savings");
+			System.out.println("-----------------------");
+			
+			accountType = null;
+			accountType = scan.next().toString();
+			
+			System.out.println("-----------------------");
+			System.out.println("how much would you like to withdrawal?");
+			System.out.println("-----------------------");
+			int funds1 = scan.nextInt();
+			System.out.println("-----------------------");
+			System.out.println(service.withdrawalFunds(funds1, accountType));
+			System.out.println("-----------------------");
+			System.out.println("continue? y or n");
+			proceed = scan.next().charAt(0);
 			break;
 		case 5:
+			System.out.println("-----------------------");
+			System.out.println("What account would you like to check?");
+			System.out.println("checking, reserve, savings");
+			System.out.println("-----------------------");
+			accountType = scan.next().toString();
+			System.out.println("-----------------------");
+			System.out.println(service.checkFunds(accountType));
+			System.out.println("-----------------------");
+			System.out.println("continue? y or n");
+			proceed = scan.next().charAt(0);
 			break;
 		case 6:
+			System.out.println("-----------------------");
+			System.out.println("Logout of current account?");
+			System.out.println("-----------------------");
+			input = scan.next().toString();
+			System.out.println(service.logout(input));
+			System.out.println("-----------------------");
+			System.out.println("continue? y or n");
+			proceed = scan.next().charAt(0);
+			
 			break;
 		case 7:
 			System.out.println("-----------------------");
-			System.out.println("Thank you for using bank account manager");
+			System.out.println("What account would you like to transfer from?");
+			System.out.println("checking, reserve, savings");
 			System.out.println("-----------------------");
-			System.exit(0);
-			default:
+			input = scan.next().toString();
+			userInputs[0]= input;
+			System.out.println("-----------------------");
+			System.out.println("How much would you like to transfer?");
+			System.out.println("-----------------------");
+			funds = scan.nextInt();
+			
+			System.out.println("-----------------------");
+			System.out.println("What account would you like to transfer funds to?");
+			System.out.println("checking, reserve, savings");
+			System.out.println("-----------------------");
+			input = scan.next().toString();
+			userInputs[1]= input;
+			
+			
+			System.out.println("-----------------------");
+			System.out.println(service.transferFunds(userInputs[0], funds, userInputs[1]));
+			System.out.println("-----------------------");
+			
+			
+			
+			
 			break;
+		case 8:
+		System.out.println("-----------------------");
+		System.out.println("Thank you for using bank account manager");
+		System.out.println("-----------------------");
+		System.exit(0);
+		default:
+		break;
 		}
 		}
 		

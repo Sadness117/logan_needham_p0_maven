@@ -4,7 +4,7 @@ import java.util.List;
 
 import dao.BankAccountDao;
 import dao.BankAccountDaoDatabaseImpl;
-import exceptions.IncorrectUsernameOrPasswordException;
+
 import model.BankAccountPojo;
 
 
@@ -17,16 +17,17 @@ public class BankAccountServiceImpl implements BankAccountService {
 		bankAccountDaoDatabaseImpl = new BankAccountDaoDatabaseImpl();
 	}
 	@Override
-	public BankAccountPojo addFunds(int funds, String accountType) {
+	public String addFunds(int funds, String accountType) {
 		// TODO Auto-generated method stub
-		
-		return null;
+		int result = bankAccountDaoDatabaseImpl.addFunds(funds, accountType, currUser);
+		return result + " funds added";
 	}
 
 	@Override
-	public BankAccountPojo withdrawalFunds(int funds, String accountType) {
+	public String withdrawalFunds(int funds, String accountType) {
 		// TODO Auto-generated method stub
-		return null;
+		int result = bankAccountDaoDatabaseImpl.addFunds(funds, accountType, currUser);
+		return result + " withdrawn";
 	}
 
 	@Override
@@ -82,5 +83,25 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public String checkFunds(String accountType) {
+		int currFunds = bankAccountDaoDatabaseImpl.checkFunds(accountType, currUser);
+		return "$"+ currFunds +" in " + accountType;
+	}
+	@Override
+	public String logout(String input) {
+		// TODO Auto-generated method stub
+		if(input.equals("y")) {
+			currUser = null;
+			return "Sucessfully logged out";
+		}else {
+			return "canceled logout";
+		}
+		
+	}
+	@Override
+	public String transferFunds(String fromAccount, int funds, String toAccount) {
+		// TODO Auto-generated method stub
+		int status = bankAccountDaoDatabaseImpl.transferFunds(fromAccount, funds, toAccount, currUser);
+		return "$"+ status+"transfered";
+	}
 }

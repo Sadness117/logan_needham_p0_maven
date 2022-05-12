@@ -77,7 +77,7 @@ public class BankAccountPojo {
 		}
 	}
 	public int getChecking() {
-		return this.savings;
+		return this.checking;
 	}
 	public int getReserve() {
 		return this.reserve;
@@ -85,39 +85,42 @@ public class BankAccountPojo {
 	public int getSavings() {
 		return this.savings;
 	}
-	public String addFunds(int funds, String accountType) {
-		String message;
+	public int addFunds(int funds, String accountType) {
+		
 		if(accountType.equals("checking")) {
 			this.checking += funds;
-			message = "funds added to checking";
+			return this.checking;
+			
 		}else if(accountType.equals("reserve")) {
 			this.reserve+= funds;
-			message = "funds added to reserve";
+			return this.reserve;
+			
 		}else if(accountType.equals("savings")) {
 			this.savings+= funds;
-			message = "funds added to savings";
+			return this.savings;
+			
 		}else {
-			message = "invalid account type";
+			return -0;
 		}
-		return message;
+	
 	}
-	public String withdrawalFunds(int funds, String accountType) {
+	public int withdrawalFunds(int funds, String accountType) {
 		//TODO errorHandling, cannot go below negative
-		String message = null;
 		if(accountType.equals("checking")) {
-			if(this.checking -funds < 0) {
 			this.checking -= funds;
+			return this.checking;
+			
 		}else if(accountType.equals("reserve")) {
 			this.reserve-= funds;
-			message = "funds removed from reserve";
+			return this.reserve;
+			
 		}else if(accountType.equals("savings")) {
 			this.savings-= funds;
-			message = "funds removed from savings";
+			return this.savings;
+			
 		}else {
-			message = "invalid account type";
+			return -0;
 		}
 		
-		}
-		return message;
 	}
 }
