@@ -5,10 +5,10 @@ public class BankAccountPojo {
 	private String hash_password;
 	private boolean loginSatus;
 	private int Id;
-	private int checking;
-	private int reserve;
-	private int savings;
-	public BankAccountPojo(String username, String password, int id, int checking, int reserve, int savings){
+	private double checking;
+	private double reserve;
+	private double savings;
+	public BankAccountPojo(String username, String password, int id, double checking, double reserve, double savings){
 		this.username = username;
 		this.hash_password = password;
 		this.loginSatus = false;
@@ -76,16 +76,16 @@ public class BankAccountPojo {
 			return "incorrect password";
 		}
 	}
-	public int getChecking() {
+	public double getChecking() {
 		return this.checking;
 	}
-	public int getReserve() {
+	public double getReserve() {
 		return this.reserve;
 	}
-	public int getSavings() {
+	public double getSavings() {
 		return this.savings;
 	}
-	public int addFunds(int funds, String accountType) {
+	public double addFunds(double funds, String accountType) {
 		
 		if(accountType.equals("checking")) {
 			this.checking += funds;
@@ -104,7 +104,7 @@ public class BankAccountPojo {
 		}
 	
 	}
-	public int withdrawalFunds(int funds, String accountType) {
+	public double withdrawalFunds(double funds, String accountType) {
 		//TODO errorHandling, cannot go below negative
 		if(accountType.equals("checking")) {
 			this.checking -= funds;

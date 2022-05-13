@@ -6,18 +6,30 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 
 import model.BankAccountPojo;
 
 public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 	
 	
-	@Override
-	public int transferFunds(String fromAccount, int funds, String toAccount, BankAccountPojo currUser) {
+	public String hashPassword(String password) {
+		String hashedPass = BCrypt.hashpw(password, BCrypt.gensalt(10));
+		
+		return hashedPass;
+	}
+	public boolean checkPass(String password, String hashedPass) {
+		if (BCrypt.checkpw(password, hashedPass)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public double transferFunds(String fromAccount, double funds, String toAccount, BankAccountPojo currUser) {
 		Connection conn;
 		BankAccountPojo bankAccountPojo = null;
-		int startingAccount;
-		int endingAccount;
+		double startingAccount;
+		double endingAccount;
 		
 		
 		
@@ -68,7 +80,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 		return funds;
 	}
 
-	@Override
+	
 	public boolean addAccount(String username, String password) {
 		// TODO Auto-generated method stub
 		Connection conn;
@@ -87,7 +99,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 		
 	}
 
-	@Override
+	
 	public BankAccountPojo login(String username, String password) {
 		// TODO Auto-generated method stub
 		Connection conn;
@@ -100,7 +112,8 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 			
 			ResultSet result = stmt.executeQuery(query);
 			result.next();
-			if (result.getString(3).equals(password)) {
+			boolean checkPassword= checkPass(password, result.getString(3));
+			if (checkPassword == true) {
 				System.out.println("correct password");
 				bankAccountPojo = new BankAccountPojo(result.getString(2), result.getString(3), result.getInt(1), result.getInt(4), result.getInt(5), result.getInt(6));
 			}
@@ -114,35 +127,35 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 		return bankAccountPojo;
 	}
 
-	@Override
+	
 	public BankAccountPojo updateAccount(BankAccountPojo bankAccountPojo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public void deleteAccount(int productId) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public List<BankAccountPojo> getAllBankAccounts() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public BankAccountPojo getAnAccountById(int accountId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public int addFunds(int funds, String accountType, BankAccountPojo currUser) {
+	
+	public double addFunds(double funds, String accountType, BankAccountPojo currUser) {
 		// TODO Auto-generated method stub
 		Connection conn;
-		int totalFunds;
+		double totalFunds;
 		try {
 			totalFunds = currUser.addFunds(funds, accountType);
 			conn = DBUtil.makeConnection();
@@ -158,12 +171,12 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 		return funds;
 	}
 
-	@Override
-	public int withdrawalFunds(int funds, String accountType, BankAccountPojo currUser) {
+	
+	public double withdrawalFunds(double funds, String accountType, BankAccountPojo currUser) {
 		// TODO Auto-generated method stub
 		
 		Connection conn;
-		int totalFunds;
+		double totalFunds;
 		try {
 			totalFunds = currUser.withdrawalFunds(funds, accountType);
 			conn = DBUtil.makeConnection();
@@ -180,8 +193,8 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 		return funds;
 	}
 
-	@Override
-	public int checkFunds(String accountType, BankAccountPojo currUser) {
+	
+	public double checkFunds(String accountType, BankAccountPojo currUser) {
 		// TODO Auto-generated method stub
 		if(accountType.equals("checking")) {
 			return currUser.getChecking();
@@ -195,10 +208,11 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 		
 	}
 
-	@Override
+	
 	public BankAccountPojo getAnAccountByUsername(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 }

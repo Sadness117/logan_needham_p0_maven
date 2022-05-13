@@ -12,11 +12,11 @@ public interface BankAccountDao {
 	void deleteAccount(int productId); // delete
 	List<BankAccountPojo> getAllBankAccounts();//read 
 	BankAccountPojo getAnAccountById(int accountId);//read
-	int addFunds(int funds, String accountType, BankAccountPojo currUser);// updates
-	int withdrawalFunds(int funds, String accountType, BankAccountPojo currUser);//updates
+	double addFunds(double funds, String accountType, BankAccountPojo currUser);// updates
+	double withdrawalFunds(double funds, String accountType, BankAccountPojo currUser);//updates
 	BankAccountPojo getAnAccountByUsername(String username);//read
-	int checkFunds (String accountType, BankAccountPojo currUser);// read
-	int transferFunds(String fromAccount, int funds, String toAccount, BankAccountPojo currUser);
+	double checkFunds (String accountType, BankAccountPojo currUser);// read
+	double transferFunds(String fromAccount, double funds, String toAccount, BankAccountPojo currUser);
 	
 	
 }
