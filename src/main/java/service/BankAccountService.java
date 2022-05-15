@@ -1,17 +1,15 @@
 package service;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import exceptions.notEnoughFundsException;
 import model.BankAccountPojo;
 
 public interface BankAccountService {
-	String addAccount(String username, String password); //create
-	BankAccountPojo updateAccount(BankAccountPojo bankAccountPojo); //update
-	void deleteAccount(int productId); // delete
-	List<BankAccountPojo> getAllBankAccounts();//read 
-	BankAccountPojo getAnAccount(int productId);//read
+	String addAccount(String username, String password)throws Exception ; //create
 	String addFunds(double funds, String accountType);// updates
-	String withdrawalFunds(double funds, String accountType);//updates
+	String withdrawalFunds(double funds, String accountType)throws notEnoughFundsException;//updates
 	BankAccountPojo getId();//read
 	String login(String username, String password); //create
 	String checkFunds(String accountType);//read

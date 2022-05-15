@@ -81,6 +81,10 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println(service.login(userInputs[0], userInputs[1]));
 			break;
 		case 3:
+			if (service.checkLoggedIn() != true) {
+				System.out.println("You must login first");
+				break;
+			}
 			System.out.println("-----------------------");
 			System.out.println("Where would you like the funds to go?.");
 			System.out.println("checking, reserve, savings");
@@ -99,6 +103,10 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			proceed = scan.next().charAt(0);
 			break;
 		case 4:
+			if (service.checkLoggedIn() != true) {
+				System.out.println("You must login first");
+				break;
+			}
 			System.out.println("-----------------------");
 			System.out.println("Where would you like the funds withdrawn from?");
 			System.out.println("checking, reserve, savings");
@@ -118,6 +126,10 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			proceed = scan.next().charAt(0);
 			break;
 		case 5:
+			if (service.checkLoggedIn() != true) {
+				System.out.println("You must login first");
+				break;
+			}
 			System.out.println("-----------------------");
 			System.out.println("What account would you like to check?");
 			System.out.println("checking, reserve, savings");
@@ -130,6 +142,10 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			proceed = scan.next().charAt(0);
 			break;
 		case 6:
+			if(service.logout(null).equals("nothing to logout of.")) {
+				System.out.println(service.logout(null));
+				break;
+			}
 			System.out.println("-----------------------");
 			System.out.println("Logout of current account?");
 			System.out.println("-----------------------");
@@ -141,6 +157,10 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			
 			break;
 		case 7:
+			if (service.checkLoggedIn() != true) {
+				System.out.println("You must login first");
+				break;
+			}
 			System.out.println("-----------------------");
 			System.out.println("What account would you like to transfer from?");
 			System.out.println("checking, reserve, savings");

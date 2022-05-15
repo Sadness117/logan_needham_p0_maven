@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import exceptions.notEnoughFundsException;
 import model.BankAccountPojo;
 
 public class BankAccountDaoDatabaseImpl implements BankAccountDao{
@@ -81,7 +82,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 	}
 
 	
-	public boolean addAccount(String username, String password) {
+	public boolean addAccount(String username, String password) throws SQLException{
 		// TODO Auto-generated method stub
 		Connection conn;
 		try {
@@ -92,7 +93,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 			result.next();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new SQLException(e);
 		}
 		
 		return true;
@@ -172,12 +173,30 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao{
 	}
 
 	
-	public double withdrawalFunds(double funds, String accountType, BankAccountPojo currUser) {
+	public double withdrawalFunds(double funds, String accountType, BankAccountPojo currUser) throws notEnoughFundsException {
 		// TODO Auto-generated method stub
 		
 		Connection conn;
 		double totalFunds;
+		double initialFunds = 0;
 		try {
+			if(accountType.equals("checking")) {
+				initialFunds = currUser.getChecking();
+				
+			}
+			else if (accountType.equals("reserve")) {
+				initialFunds = currUser.getReserve();
+			}
+			else if(accountType.equals("savings")) {
+				initialFunds = currUser.getSavings();
+			}
+			totalFunds = initialFunds - funds; 
+			
+			
+			if(totalFunds <0) {
+				throw new notEnoughFundsException();
+			}
+			
 			totalFunds = currUser.withdrawalFunds(funds, accountType);
 			conn = DBUtil.makeConnection();
 			Statement stmt = conn.createStatement();

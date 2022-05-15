@@ -20,6 +20,7 @@ public class DBUtil {
 	}
 	static Connection makeConnection() throws SQLException {
 		//step 2
+		
 		String connectionUrl = "jdbc:postgresql://localhost:5432/bank_p0";
 		String userName = "postgres";
 		String password = "Postgresql1";
