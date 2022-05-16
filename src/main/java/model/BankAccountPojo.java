@@ -1,6 +1,7 @@
 package model;
 
 public class BankAccountPojo {
+	//blueprint for a users account
 	private String username;
 	private String hash_password;
 	private boolean loginSatus;
@@ -8,6 +9,7 @@ public class BankAccountPojo {
 	private double checking;
 	private double reserve;
 	private double savings;
+	//initializes the new users information
 	public BankAccountPojo(String username, String password, int id, double checking, double reserve, double savings){
 		this.username = username;
 		this.hash_password = password;
@@ -18,16 +20,19 @@ public class BankAccountPojo {
 		this.savings = savings;
 		
 	}
-	
+	//get method for checking
 	public String getCheckingInfo() {
 		return "$" + this.checking + " in checking account.";
 	}
+	//get method for reserve
 	public String getReserveInfo() {
 		return "$" + this.reserve + " in reserve account.";
 	}
+	//get method for savings
 	public String getSavingsInfo() {
 		return "$" + this.savings + " in savings account.";
 	}
+	//gets pa
 	public String getPassword(String enteredPassword) {
 		if (this.hash_password.equals(enteredPassword)) {
 			return hash_password;

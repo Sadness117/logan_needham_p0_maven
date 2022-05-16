@@ -10,7 +10,6 @@ public interface BankAccountService {
 	String addAccount(String username, String password)throws Exception ; //create
 	String addFunds(double funds, String accountType);// updates
 	String withdrawalFunds(double funds, String accountType)throws notEnoughFundsException;//updates
-	BankAccountPojo getId();//read
 	String login(String username, String password); //create
 	String checkFunds(String accountType);//read
 	String logout(String input);//update

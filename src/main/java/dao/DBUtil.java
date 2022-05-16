@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtil {
+	//class for connecting to the database
 	static Connection conn;
 	static {
 		try {
@@ -20,8 +21,12 @@ public class DBUtil {
 	}
 	static Connection makeConnection() throws SQLException {
 		//step 2
-		
-		String connectionUrl = "jdbc:postgresql://localhost:5432/bank_p0";
+		//host url
+		//host username
+		//host password
+		//jdbc:postgresql://bank-p0.czewg1ryswrr.us-east-1.rds.amazonaws.com/bank_p0";
+		//jdbc:postgresql://localhost:5432/bank_p0";
+		String connectionUrl = "jdbc:postgresql://bank-p0.czewg1ryswrr.us-east-1.rds.amazonaws.com/bank_p0";
 		String userName = "postgres";
 		String password = "Postgresql1";
 		
