@@ -2,6 +2,7 @@ package presentation;
 
 import java.util.Scanner;
 
+import model.BankAccountPojo;
 import service.BankAccountServiceImpl;
 
 public class BankSystem {
@@ -15,6 +16,7 @@ String input = null;
 String accountType = null;
 String userInputs[] = new String[2];
 double funds;
+BankAccountPojo currUser = null;
 
 BankAccountServiceImpl service = new BankAccountServiceImpl();
 		char proceed = 'y';
@@ -75,13 +77,15 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("-----------------------");
 			input = scan.next().toString();
 			userInputs[1] = input;
-			
-			System.out.println(userInputs[0]);
-			System.out.println(userInputs[1]);
-			System.out.println(service.login(userInputs[0], userInputs[1]));
+			if (service.login(userInputs[0], userInputs[1]) != null) {
+				currUser = service.login(userInputs[0], userInputs[1]);
+				System.out.println("Welcome " + userInputs[0]);
+			} else {
+				System.out.println("incorrect username or password.");
+			}
 			break;
 		case 3:
-			if (service.checkLoggedIn() != true) {
+			if (service.checkLoggedIn(currUser) != true) {
 				System.out.println("You must login first");
 				break;
 			}
@@ -97,13 +101,13 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("-----------------------");
 			funds = scan.nextDouble();
 			System.out.println("-----------------------");
-			System.out.println(service.addFunds(funds, accountType));
+			System.out.println(service.addFunds(funds, accountType, currUser));
 			System.out.println("-----------------------");
 			System.out.println("continue? y or n");
 			proceed = scan.next().charAt(0);
 			break;
 		case 4:
-			if (service.checkLoggedIn() != true) {
+			if (service.checkLoggedIn(currUser) != true) {
 				System.out.println("You must login first");
 				break;
 			}
@@ -120,13 +124,13 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("-----------------------");
 			funds = scan.nextDouble();
 			System.out.println("-----------------------");
-			System.out.println(service.withdrawalFunds(funds, accountType));
+			System.out.println(service.withdrawalFunds(funds, accountType, currUser));
 			System.out.println("-----------------------");
 			System.out.println("continue? y or n");
 			proceed = scan.next().charAt(0);
 			break;
 		case 5:
-			if (service.checkLoggedIn() != true) {
+			if (service.checkLoggedIn(currUser) != true) {
 				System.out.println("You must login first");
 				break;
 			}
@@ -136,28 +140,28 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("-----------------------");
 			accountType = scan.next().toString();
 			System.out.println("-----------------------");
-			System.out.println(service.checkFunds(accountType));
+			System.out.println(service.checkFunds(accountType,currUser));
 			System.out.println("-----------------------");
 			System.out.println("continue? y or n");
 			proceed = scan.next().charAt(0);
 			break;
 		case 6:
-			if(service.logout(null).equals("nothing to logout of.")) {
-				System.out.println(service.logout(null));
+			if(service.logout("n", currUser).equals("nothing to logout of.")) {
+				System.out.println(service.logout("n", currUser));
 				break;
 			}
 			System.out.println("-----------------------");
 			System.out.println("Logout of current account?");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			System.out.println(service.logout(input));
+			System.out.println(service.logout(input, currUser));
 			System.out.println("-----------------------");
 			System.out.println("continue? y or n");
 			proceed = scan.next().charAt(0);
 			
 			break;
 		case 7:
-			if (service.checkLoggedIn() != true) {
+			if (service.checkLoggedIn(currUser) != true) {
 				System.out.println("You must login first");
 				break;
 			}
@@ -181,7 +185,7 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			
 			
 			System.out.println("-----------------------");
-			System.out.println(service.transferFunds(userInputs[0], funds, userInputs[1]));
+			System.out.println(service.transferFunds(userInputs[0], funds, userInputs[1], currUser));
 			System.out.println("-----------------------");
 			
 			

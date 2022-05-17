@@ -10,10 +10,12 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import exceptions.notEnoughFundsException;
 import model.BankAccountPojo;
-
+import dao.BankAccountDaoDatabaseImpl;
 public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 	// this class handles the database
-
+	
+	
+	
 	// hashes the users password
 	public String hashPassword(String password) {
 		// takes your password and returns an encrypted version of it
@@ -96,9 +98,11 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 	}
 
 	// adds an account to the database
-	public boolean addAccount(String username, String hashedPassword) throws SQLException {
+	public boolean addAccount(String username, String password) throws SQLException {
 		// initializes connection
 		Connection conn;
+		
+		String hashed = hashPassword(password);
 		try {
 			// creates connection to database
 			conn = DBUtil.makeConnection();
@@ -108,7 +112,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 			// the checking, reserve, and savings is always passed through as 0 for the
 			// first time
 			String query = "INSERT INTO accounts(username, hashed_password, checking, reserve, savings) VALUES ('"
-					+ username + "', '" + hashedPassword + "', " + 0 + ", " + 0 + ", " + 0 + ") returning id";
+					+ username + "', '" + hashed + "', " + 0 + ", " + 0 + ", " + 0 + ") returning id";
 			ResultSet result = stmt.executeQuery(query);
 			result.next();
 		} catch (SQLException e) {
@@ -138,7 +142,6 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 			boolean checkPassword = checkPass(password, result.getString(3));
 			if (checkPassword == true) {
 				// if correct password returns the user and their information
-				System.out.println("correct password");
 				bankAccountPojo = new BankAccountPojo(result.getString(2), result.getString(3), result.getInt(1),
 						result.getInt(4), result.getInt(5), result.getInt(6));
 			} else {
@@ -157,6 +160,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 		Connection conn;
 		double totalFunds;
 		try {
+			
 			// takes the funds from the logged in user and ands the funds to the account
 			totalFunds = currUser.addFunds(funds, accountType);
 			conn = DBUtil.makeConnection();

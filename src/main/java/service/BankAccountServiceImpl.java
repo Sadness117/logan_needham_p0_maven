@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import dao.BankAccountDao;
@@ -11,14 +12,14 @@ import model.BankAccountPojo;
 public class BankAccountServiceImpl implements BankAccountService {
 
 	BankAccountDao bankAccountDao;
-	BankAccountPojo currUser;
+	DecimalFormat decimalFormat =new DecimalFormat("0.00");
 	BankAccountDaoDatabaseImpl bankAccountDaoDatabaseImpl;
 // constructor for service layer
 	public BankAccountServiceImpl() {
 		bankAccountDaoDatabaseImpl = new BankAccountDaoDatabaseImpl();
 	}
 //adds funds to requested account
-	public String addFunds(double funds, String accountType) {
+	public String addFunds(double funds, String accountType, BankAccountPojo currUser) {
 	
 		//checks if the funds are greater than 0
 		if (funds<=0) {
@@ -27,7 +28,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		//goes through account types, or returns invalid
 		if(accountType.equals("checking") || accountType.equals("reserve") || accountType.equals("savings")) {
 			double result = bankAccountDaoDatabaseImpl.addFunds(funds, accountType, currUser);
-			return result + " funds added";
+			return "$"+ decimalFormat.format(funds) + " added to " + accountType;
 			
 		}
 		return "Invalid account type.";
@@ -36,7 +37,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	//used to withdrawal funds
-	public String withdrawalFunds(double funds, String accountType){
+	public String withdrawalFunds(double funds, String accountType, BankAccountPojo currUser){
 		// cant withdrawal negative funds
 		if (funds<=0) {
 			return "funds must be greater than $0";
@@ -45,7 +46,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 		if(accountType.equals("checking") || accountType.equals("reserve") || accountType.equals("savings")) {
 			try {
 			double result = bankAccountDaoDatabaseImpl.withdrawalFunds(funds, accountType, currUser);
-			return result + " withdrawn";
+			return "$"+ decimalFormat.format(funds) + " withdrawn from " + accountType;
 			}
 			catch(Exception e){
 				//catches the error for not enough funds
@@ -63,11 +64,15 @@ public class BankAccountServiceImpl implements BankAccountService {
 		// https://www.educative.io/edpresso/how-to-generate-random-numbers-in-java
 		try {
 			//gets a hashed version of the password
-		String hashed = bankAccountDaoDatabaseImpl.hashPassword(password);
+		
 		//adds account to database
-		boolean bankAccountPojo = bankAccountDaoDatabaseImpl.addAccount(username, hashed);
-
-		return "Account Successfully added, welcome " + username;
+		boolean bankAccountPojo = bankAccountDaoDatabaseImpl.addAccount(username, password);
+		if(bankAccountPojo == true) {
+			return username + " successfully added.";
+		}else {
+			return "error";
+		}
+		
 		}
 		catch(SQLException e){
 			//returns if the account username already exists
@@ -76,25 +81,25 @@ public class BankAccountServiceImpl implements BankAccountService {
 		
 	}
 //used to login
-	public String login(String username, String password) {
+	public BankAccountPojo login(String username, String password) {
 		//calls data layer to login
 		BankAccountPojo bankAccountPojo = bankAccountDaoDatabaseImpl.login(username, password);
 		//if null means that the username or password input was incorrect
 		if (bankAccountPojo != null) {
-			currUser = bankAccountPojo;
-			return "Logged in";
+			
+			return bankAccountPojo;
 		} else {
-			return "incorrect username or password";
+			return null;
 		}
 
 	}
 
 	//checks funds of requested account type
-	public String checkFunds(String accountType) {
+	public String checkFunds(String accountType, BankAccountPojo currUser) {
 		//goes through account types and if not a valid account it returns invalid
 		if(accountType.equals("checking") || accountType.equals("reserve") || accountType.equals("savings")) {
 			double currFunds = bankAccountDaoDatabaseImpl.checkFunds(accountType, currUser);
-			return "$" + currFunds + " in " + accountType;
+			return "$" + decimalFormat.format(currFunds) + " in " + accountType;
 			
 			
 		}
@@ -102,11 +107,11 @@ public class BankAccountServiceImpl implements BankAccountService {
 
 	}
 //logs out the user
-	public String logout(String input) {
+	public String logout(String input, BankAccountPojo currUser) {
 		
 		//checks to see if a user is logged in already or not
 		if (currUser == null) {
-			return "nothing to logout of.";
+			return "Nothing to logout of.";
 		}
 		//logs user out
 		if (input.equals("y")) {
@@ -119,7 +124,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	//transfer funds from one account to another
-	public String transferFunds(String fromAccount, double funds, String toAccount) {
+	public String transferFunds(String fromAccount, double funds, String toAccount, BankAccountPojo currUser) {
 		
 		//cant transfer 0 or less
 		if (funds<=0) {
@@ -127,8 +132,8 @@ public class BankAccountServiceImpl implements BankAccountService {
 		}
 		//checks account types and if not one it returns invalid
 		if (fromAccount.equals("checking") || fromAccount.equals("reserve") || fromAccount.equals("savings")) {
-			double status = bankAccountDaoDatabaseImpl.transferFunds(fromAccount, funds, toAccount, currUser);
-			return "$" + status + "transfered";
+			double currFunds = bankAccountDaoDatabaseImpl.transferFunds(fromAccount, funds, toAccount, currUser);
+			return "$" + decimalFormat.format(currFunds) + " transfered.";
 			
 		}
 		return "Invalid account type.";
@@ -137,7 +142,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 	}
 
 	//checks if logged in
-	public boolean checkLoggedIn() {
+	public boolean checkLoggedIn(BankAccountPojo currUser) {
 		//if there is no user it returns false else true
 		if (currUser == null) {
 			return false;
@@ -145,4 +150,6 @@ public class BankAccountServiceImpl implements BankAccountService {
 			return true;
 		}
 	}
+	
+	
 }
