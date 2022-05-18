@@ -77,7 +77,7 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 		if (startingAccount >= funds) {
 			startingAccount -= funds;
 			endingAccount += funds;
-			currUser.transferFunds(fromAccount, funds, toAccount);
+			
 		} else {
 			return -0;
 		}
@@ -90,7 +90,8 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 			// fromAccount
 			String query = "UPDATE accounts SET " + fromAccount + " = " + startingAccount + ", " + toAccount + " = "
 					+ endingAccount + " WHERE username = " + "'" + currUser.getUsername() + "'";
-
+			//updates logged in user
+			currUser.transferFunds(fromAccount, funds, toAccount);
 			int result = stmt.executeUpdate(query);
 
 		} catch (SQLException e) {
