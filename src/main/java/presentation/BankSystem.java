@@ -154,8 +154,18 @@ BankAccountServiceImpl service = new BankAccountServiceImpl();
 			System.out.println("Logout of current account?");
 			System.out.println("-----------------------");
 			input = scan.next().toString();
-			System.out.println(service.logout(input, currUser));
-			System.out.println("-----------------------");
+			if(service.logout(input, currUser).equals("Sucessfully logged out")) {
+				System.out.println("-----------------------");
+				System.out.println(service.logout(input, currUser));
+				System.out.println("-----------------------");
+				currUser = null;
+			}else {
+				System.out.println("-----------------------");
+				System.out.println(service.logout(input, currUser));
+				System.out.println("-----------------------");
+			}
+			
+			
 			System.out.println("continue? y or n");
 			proceed = scan.next().charAt(0);
 			
