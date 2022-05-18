@@ -22,15 +22,15 @@ public class BankAccountPojo {
 	}
 	//get method for checking
 	public String getCheckingInfo() {
-		return "$" + this.checking + " in checking account.";
+		return "$" + checking + " in checking account.";
 	}
 	//get method for reserve
 	public String getReserveInfo() {
-		return "$" + this.reserve + " in reserve account.";
+		return "$" + reserve + " in reserve account.";
 	}
 	//get method for savings
 	public String getSavingsInfo() {
-		return "$" + this.savings + " in savings account.";
+		return "$" + savings + " in savings account.";
 	}
 	//gets pa
 	public String getPassword(String enteredPassword) {
@@ -41,6 +41,33 @@ public class BankAccountPojo {
 			return "Incorrect password";
 		}
 		
+	}
+	public String transferFunds(String fromAccount, double funds, String toAccount) {
+		if (fromAccount.equals("checking")) {
+			checking -= funds;
+
+		} else if (fromAccount.equals("reserve")) {
+			reserve -=funds;
+
+		} else if (fromAccount.equals("savings")) {
+			savings -=funds;
+		} else {
+			return "no account";
+		}
+		if (toAccount.equals("checking")) {
+			this.checking += funds;
+
+		} else if (toAccount.equals("reserve")) {
+			reserve +=funds;
+
+		} else if (toAccount.equals("savings")) {
+			savings +=funds;
+		} else {
+			return "no account";
+		}
+		return "$"+ funds + " transfered to " +fromAccount;
+		
+
 	}
 	public Boolean checkPass(String enteredPassword) {
 		if (this.hash_password.equals(enteredPassword)) {
