@@ -77,6 +77,9 @@ public class BankAccountDaoDatabaseImpl implements BankAccountDao {
 		if (startingAccount >= funds) {
 			startingAccount -= funds;
 			endingAccount += funds;
+			currUser.transferFunds(fromAccount, funds, toAccount);
+		} else {
+			return -0;
 		}
 
 		try {

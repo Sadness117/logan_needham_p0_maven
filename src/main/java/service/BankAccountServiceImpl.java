@@ -133,6 +133,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 		//checks account types and if not one it returns invalid
 		if (fromAccount.equals("checking") || fromAccount.equals("reserve") || fromAccount.equals("savings")) {
 			double currFunds = bankAccountDaoDatabaseImpl.transferFunds(fromAccount, funds, toAccount, currUser);
+			if (currFunds == -0) {
+				return "not enough funds";
+			}
 			return "$" + decimalFormat.format(currFunds) + " transfered.";
 			
 		}
